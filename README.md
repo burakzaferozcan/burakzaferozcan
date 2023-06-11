@@ -1,7 +1,7 @@
 - 👋 Hi, I’m Burak Zafer Özcan
 - 👀 I’m interested in web software. 
 - 🌱 I’m currently learning HTML,CSS,Javascript
-- 📫 How to reach me How can you reach me? 
+- 📫 How can you reach me? 
 e-mail: burakzaferozcan@gmail.com
 instagram: @burakzaferozcan
 
