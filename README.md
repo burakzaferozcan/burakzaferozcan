@@ -1,6 +1,6 @@
 - 👋 Hi, I’m Burak Zafer Özcan
 - 👀 I’m interested in web software. 
-- 🌱 I’m currently learning Javascript & Java
+- 🌱 I’m currently learning React.js
 - 📫 How can you reach me? 
 e-mail: burakzaferozcan@gmail.com
 instagram: @burakzaferozcan
