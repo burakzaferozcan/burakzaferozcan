@@ -3,7 +3,7 @@
 - 🌱 I’m currently learning React.js
 - 📫 How can you reach me? 
 e-mail: burakzaferozcan@gmail.com
-instagram: @burakzaferozcan
+
 
 <!---
 burakzaferozcan/burakzaferozcan is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
