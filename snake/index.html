@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yılan Oyunu</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #0e1116;
+      }
+      canvas {
+        background-color: #161b22;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="1250" height="300"></canvas>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // Yılan başlangıç ayarları
+      let snake = [{ x: 50, y: 50 }];
+      let dx = 50;
+      let dy = 0;
+      let foodX;
+      let foodY;
+      let gameEnded = false;
+      const technologies = [
+        "html.png",
+        "css.png",
+        "bootstrap.png",
+        "tailwind.png",
+        "javascript.png",
+        "react.png",
+        "vue.png",
+        "nextjs.png",
+        "nuxtjs.png",
+        "nodejs.png",
+        "express.png",
+        "laravel.png",
+        "spring.png",
+        "mysql.png",
+        "mongodb.png",
+      ];
+      let currentFoodImage = new Image();
+      let currentTechnologyIndex = 0;
+      let snakeImages = [];
+
+      function drawGrid() {
+        for (let i = 0; i < canvas.width; i += 50) {
+          for (let j = 0; j < canvas.height; j += 50) {
+            ctx.fillStyle = "#2d333b";
+            ctx.fillRect(i, j, 48, 48);
+          }
+        }
+      }
+
+      function drawSnakePart(snakePart, index) {
+        if (index === 0) {
+          ctx.fillStyle = "#6a40d6"; // Yılanın başı mor
+          ctx.fillRect(snakePart.x, snakePart.y, 48, 48);
+        } else {
+          const image = snakeImages[index - 1];
+          if (image) {
+            ctx.drawImage(image, snakePart.x, snakePart.y, 48, 48);
+          } else {
+            ctx.fillStyle = "#6a40d6"; // Yılanın rengi
+            ctx.fillRect(snakePart.x, snakePart.y, 48, 48);
+          }
+        }
+      }
+
+      function drawSnake() {
+        snake.forEach(drawSnakePart);
+      }
+
+      function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawGrid();
+      }
+
+      function moveSnake() {
+        const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+        snake.unshift(head);
+
+        if (head.x === foodX && head.y === foodY) {
+          if (snakeImages.length < technologies.length) {
+            const newImage = new Image();
+            newImage.src = currentFoodImage.src;
+            snakeImages.push(newImage);
+          }
+          generateFood(); // Yeni yem üret
+        } else {
+          snake.pop(); // Yemi yemediyse kuyruğu azalt
+        }
+      }
+
+      function changeDirection(event) {
+        const keyPressed = event.key;
+        const goingUp = dy === -50;
+        const goingDown = dy === 50;
+        const goingRight = dx === 50;
+        const goingLeft = dx === -50;
+
+        if (keyPressed === "ArrowLeft" && !goingRight) {
+          dx = -50;
+          dy = 0;
+        }
+        if (keyPressed === "ArrowUp" && !goingDown) {
+          dx = 0;
+          dy = -50;
+        }
+        if (keyPressed === "ArrowRight" && !goingLeft) {
+          dx = 50;
+          dy = 0;
+        }
+        if (keyPressed === "ArrowDown" && !goingUp) {
+          dx = 0;
+          dy = 50;
+        }
+      }
+
+      function generateFood() {
+        if (currentTechnologyIndex >= technologies.length) {
+          gameEnded = true; // Tüm teknolojiler toplandığında oyunu bitir
+          return;
+        }
+        currentFoodImage.src = technologies[currentTechnologyIndex];
+        currentTechnologyIndex++;
+
+        foodX = Math.round((Math.random() * (canvas.width - 50)) / 50) * 50;
+        foodY = Math.round((Math.random() * (canvas.height - 50)) / 50) * 50;
+      }
+
+      function drawFood() {
+        ctx.drawImage(currentFoodImage, foodX, foodY, 48, 48);
+      }
+
+      function showGameOverMessage(message) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "48px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+      }
+
+      function main() {
+        if (didGameEnd()) return;
+
+        setTimeout(function onTick() {
+          clearCanvas();
+          drawFood();
+          moveSnake();
+          drawSnake();
+          if (gameEnded) {
+            showGameOverMessage("You Win");
+            return;
+          }
+          main();
+        }, 100);
+      }
+
+      function didGameEnd() {
+        for (let i = 4; i < snake.length; i++) {
+          const hasCollided =
+            snake[i].x === snake[0].x && snake[i].y === snake[0].y;
+          if (hasCollided) {
+            showGameOverMessage("You Lost");
+            return true;
+          }
+        }
+        const hitLeftWall = snake[0].x < 0;
+        const hitRightWall = snake[0].x >= canvas.width;
+        const hitTopWall = snake[0].y < 0;
+        const hitBottomWall = snake[0].y >= canvas.height;
+
+        if (hitLeftWall || hitRightWall || hitTopWall || hitBottomWall) {
+          showGameOverMessage("You Lost");
+          return true;
+        }
+        return false;
+      }
+
+      document.addEventListener("keydown", changeDirection);
+      drawGrid();
+      generateFood();
+      main();
+    </script>
+  </body>
+</html>
