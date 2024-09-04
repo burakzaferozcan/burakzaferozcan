@@ -2,4 +2,4 @@
   my stack
 </h2>
 
-![snake](/video.gif)
+![snake](snake.gif)
